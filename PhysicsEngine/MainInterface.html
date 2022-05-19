@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="PhysicsEngine.js" defer></script>
+    <script src="MainInterface.js" defer></script>
+    <link rel="stylesheet" href="MainInterface.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <div id="centerDiv" class="centerDiv">
+        <div id="screenDiv" class="screenDiv">
+            <canvas id="screen" class="screen"></canvas>
+        </div>
+        <div id="topContent" class="topContent">
+            <div id="contentControlDiv" class="contentControlDiv">
+                <div id="gridSwitchDiv" class="switchDiv">
+                    <button id="btn01" class="btn" onclick="showGrid()"></button>
+                    <span>Grid</span>
+                </div>
+                <div id="clearCanvasSwitchDiv" class="switchDiv">
+                    <button id="btn02" class="btn" onclick="clearCanvas()"></button>
+                    <span>Clear canvas</span>
+                </div>
+            </div>
+            <div id="frameControleDiv" class="frameControleDiv">
+                <button class="frameControle" onclick="play()">
+                    <span class="material-icons">
+                        play_arrow
+                    </span>
+                </button><button class="frameControle" onclick="stopFrame()">
+                    <span class="material-icons">
+                        pause
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="sideContent" class="sideContent">
+        <button id="newShape" class="largeButton" onclick="newShapeWin()">
+            <span id="plusSign" class="material-icons">add</span><span>New Shape</span>
+        </button>
+    </div>
+</body>
+<script>
+    var gridActive = false;
+
+    function showGrid() {
+        if (!gridActive) {
+            document.getElementById('btn01').style.backgroundColor = '#2eee36b0';
+            gridActive = true;
+        } else {
+            document.getElementById('btn01').style.backgroundColor = '#3A8E32A8';
+            gridActive = false;
+        }
+    }
+</script>

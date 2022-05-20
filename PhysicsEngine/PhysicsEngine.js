@@ -214,13 +214,15 @@ class Shape {
                     //console.log(coor);
                 });
             } else if (n > 4) {
+
                 x = this.x;
                 y = this.y - (this.height / 2);
                 pointsMap.set(1, { x: x, y: y });
+
                 if (n % 2 != 0) {
                     calLoop = (n - 1) / 2;
                     if (calLoop % 2 != 0 && calLoop > 3) {
-                        ag = (90 - (angle * ((calLoop - 1) / 2))) + (angle * (((calLoop - 1) / 2) - 1));
+                        ag = (angle * (((calLoop - 1) / 2) - 1)) + (90 - (angle * (((calLoop - 1) / 2))));
                         op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
                         ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
                         x = this.x + ad;
@@ -230,7 +232,7 @@ class Shape {
                         y = this.y - op;
                         pointsMap.set((n), { x: x, y: y });
                         for (let i = 1; i < calLoop; i++) {
-                            if (i >= 1 && i <= (calLoop - 1) / 2) {
+                            if (i >= 1 && i < (calLoop - 1) / 2) {
                                 ag -= angle;
                                 op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
                                 ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
@@ -240,9 +242,73 @@ class Shape {
                                 x = this.x - ad;
                                 y = this.y - op;
                                 pointsMap.set((n - i), { x: x, y: y });
+                            } else if (i === (calLoop - 1) / 2) {
+                                ag = angle - (90 - (angle * (((calLoop - 1) / 2))));
+                                op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
+                                ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
+                                x = this.x + ad;
+                                y = this.y + op;
+                                pointsMap.set((i + 2), { x: x, y: y });
+                                x = this.x - ad;
+                                y = this.y + op;
+                                pointsMap.set((n - i), { x: x, y: y });
                             } else if (i > (calLoop - 1) / 2) {
-                                if (i === ((calLoop - 1) / 2) + 1) {
-                                    ag -= (angle / 2);
+                                ag += angle;
+                                op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
+                                ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
+                                x = this.x + ad;
+                                y = this.y + op;
+                                pointsMap.set(i + 2, { x: x, y: y });
+                                x = this.x - ad;
+                                y = this.y + op;
+                                pointsMap.set((n - i), { x: x, y: y });
+
+                            }
+                        }
+                    } else if (calLoop % 2 === 0) {
+                        ag = (90 - (angle * ((calLoop / 2)))) + (angle * ((calLoop / 2) - 1));
+                        op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
+                        ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
+                        x = this.x + ad;
+                        y = this.y - op;
+                        pointsMap.set(2, { x: x, y: y });
+                        x = this.x - ad;
+                        y = this.y - op;
+                        pointsMap.set((n), { x: x, y: y });
+                        for (let i = 1; i < calLoop; i++) {
+                            if (i >= 1 && i < calLoop / 2) {
+                                ag -= angle;
+                                op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
+                                ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
+                                x = this.x + ad;
+                                y = this.y - op;
+                                pointsMap.set((i + 2), { x: x, y: y });
+                                x = this.x - ad;
+                                y = this.y - op;
+                                pointsMap.set((n - i), { x: x, y: y });
+                            } else if (i >= calLoop / 2) {
+                                if (i === 1) {
+                                    ag = angle - ag;
+                                    op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
+                                    ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
+                                    x = this.x + ad;
+                                    y = this.y + op;
+                                    pointsMap.set(i + 2, { x: x, y: y });
+                                    x = this.x - ad;
+                                    y = this.y + op;
+                                    pointsMap.set((n - i), { x: x, y: y });
+                                } else if (i === (calLoop / 2)) { //ok
+                                    ag = angle - ag;
+                                    op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
+                                    ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
+                                    x = this.x + ad;
+                                    y = this.y + op;
+                                    pointsMap.set(i + 2, { x: x, y: y });
+                                    x = this.x - ad;
+                                    y = this.y + op;
+                                    pointsMap.set((n - i), { x: x, y: y });
+                                } else if (i === calLoop - 1) {
+                                    ag = angle + ag;
                                     op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
                                     ad = Math.cos((ag * Math.PI) / 180) * (this.height / 2);
                                     x = this.x + ad;
@@ -274,7 +340,7 @@ class Shape {
                         x = this.x - ad;
                         y = this.y - op;
                         pointsMap.set((n), { x: x, y: y });
-                        for (let i = 1; i < calLoop; i++) {
+                        for (let i = 1; i <= calLoop; i++) {
                             if (i >= 1 && i < calLoop / 2) {
                                 ag -= angle;
                                 op = Math.sin((Math.PI * ag) / 180) * (this.height / 2);
@@ -479,25 +545,22 @@ class Shape {
     }
     draw() {
         //console.log(this);
-        switch (this.shapeType) {
-            case 'curve':
-                //console.log(`${this.shapeType}, ${this.color}`);
-                let r = this.height / 2;
-                this.c.fillStyle = this.color;
-                this.c.beginPath();
-                this.c.arc(this.x, this.y, r, 0, 2 * Math.PI);
-                this.c.fill();
-                break;
-            case 'straight':
-                //console.log(`${this.shapeType}, ${this.color}`);
-                this.c.fillStyle = this.color;
-                this.c.beginPath();
-                this.coord.forEach(coor => {
-                    this.c.lineTo(coor[0], coor[1]);
-                });
-                this.c.closePath();
-                this.c.fill();
-                break;
+        if (this.shapeType === 'curve') {
+            let r = this.height / 2;
+            this.c.fillStyle = this.color;
+            this.c.beginPath();
+            this.c.arc(this.x, this.y, r, 0, 2 * Math.PI);
+            this.c.stroke();
+            this.c.fill();
+        } else if (this.shapeType === 'straight') {
+            this.c.fillStyle = this.color;
+            this.c.beginPath();
+            this.coord.forEach(coor => {
+                this.c.lineTo(coor[0], coor[1]);
+            });
+            this.c.closePath();
+            this.c.stroke();
+            this.c.fill();
         }
     }
     update() {

@@ -34,9 +34,10 @@ input[type="color"]::-webkit-color-swatch {
     width: 600px;
     height: 80px;
     background-image: linear-gradient(rgb(172, 172, 172), rgb(136, 135, 135), rgb(102, 100, 100), rgb(74, 73, 73), rgb(74, 74, 74));
-    box-shadow: 0px 01px 02px 02px;
+    box-shadow: 0px 01px 02px 0px;
     margin: 0 auto;
     border-radius: 5px;
+    padding: 2px;
 }
 
 .contentControlDiv {
@@ -48,7 +49,7 @@ input[type="color"]::-webkit-color-swatch {
 
 .btn {
     padding: 5px 5px;
-    font-size: 5px;
+    font-size: 0px;
     text-align: center;
     cursor: pointer;
     outline: none;
@@ -59,6 +60,7 @@ input[type="color"]::-webkit-color-swatch {
     box-shadow: 1px 1px 0px 0px #206819;
     top: -5px;
     position: relative;
+    margin: 2px;
 }
 
 
@@ -73,11 +75,18 @@ input[type="color"]::-webkit-color-swatch {
     transform: translateY(1px) translateX(1px);
 }
 
+#gridOn,
+#clearCan {
+    font-size: 20px;
+}
+
 
 /*-------------------------------------toggle switch---------------------------------------- */
 
 .switchDiv {
-    margin: 1px;
+    margin-top: 5px;
+    display: inline;
+    font-size: 0px;
 }
 
 .switch {
@@ -217,11 +226,11 @@ input:checked+.slider:before {
 .inputSelect {
     position: absolute;
     right: 5px;
-    width: 70px;
+    width: 96px;
 }
 
 .numInput {
-    width: 60px;
+    width: 88px;
     position: absolute;
     right: 5px;
 }
@@ -235,10 +244,10 @@ input:checked+.slider:before {
 
 .screenDiv {
     position: fixed;
-    left: 250px;
-    top: 100px;
-    width: 100%;
-    height: 100%;
+    left: 325px;
+    top: 150px;
+    width: 700px;
+    height: 600px;
 }
 
 .screen {

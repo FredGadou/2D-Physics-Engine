@@ -65,6 +65,8 @@ class WindowSetting {
         this.xInput.defaultValue = Math.floor(this.shape.x);
         this.xInput.addEventListener('change', () => {
             this.shape.setX(Math.floor(this.xInput.value));
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -86,12 +88,31 @@ class WindowSetting {
         this.yInput.defaultValue = Math.floor(parseInt(this.shape.y));
         this.yInput.addEventListener('change', () => {
             this.shape.setY(Math.floor(parseInt(this.yInput.value)));
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
         //------ /input
         //---- /yDiv
 
+
+        //---- coordDiv
+        this.coordDiv = document.createElement('div');
+        this.coordDiv.className = 'settingInDiv';
+        //------ label
+        this.pointsCoordLabel = document.createElement('label');
+        this.pointsCoordLabel.className = 'inputLabel';
+        this.pointsCoordLabel.innerHTML = 'Points Coord:';
+        //------ /label
+        //-------- pointsCoordDiv
+        this.pointsCoordDiv = document.createElement('div');
+        this.pointsCoordDiv.className = 'inChildSettingDiv';
+        //---------- input 
+        this.setPointsCoordDiv();
+        //---------- /input
+        //-------- /pointsCoordDiv
+        //---- /coordDiv
 
         //---- shapeSideDiv
         this.shapeSideDiv = document.createElement('div');
@@ -109,6 +130,8 @@ class WindowSetting {
         this.sideInput.addEventListener('change', () => {
             this.shape.setNbSide(Math.floor(this.sideInput.value));
             this.shape.setDefaultShape();
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -162,6 +185,8 @@ class WindowSetting {
                 this.shape.setNbSide(3);
             }
             this.shape.setDefaultShape();
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -187,6 +212,8 @@ class WindowSetting {
         this.heightInput.defaultValue = Math.floor(this.shape.height);
         this.heightInput.addEventListener('change', () => {
             this.shape.setHeight(Math.floor(this.heightInput.value));
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -208,6 +235,8 @@ class WindowSetting {
         this.shapeColorInput.defaultValue = this.shape.color;
         this.shapeColorInput.addEventListener('change', () => {
             this.shape.setColor(this.shapeColorInput.value);
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -241,6 +270,8 @@ class WindowSetting {
 
         this.isStaticSelect.addEventListener('change', () => {
             this.shape.setStatic(this.isStaticSelect.value);
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -266,6 +297,8 @@ class WindowSetting {
         this.xVelInput.defaultValue = this.shape.xVel;
         this.xVelInput.addEventListener('change', () => {
             this.shape.setXVel(this.xVelInput.value);
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -287,6 +320,8 @@ class WindowSetting {
         this.yVelInput.defaultValue = this.shape.yVel;
         this.yVelInput.addEventListener('change', () => {
             this.shape.setYVel(this.yVelInput.value);
+            this.resetPointCoordDiv();
+            this.setPointsCoordDiv();
             matrix.updateShape(this.shape);
             refresh();
         });
@@ -328,6 +363,9 @@ class WindowSetting {
         this.yVelDiv.appendChild(this.yVelLabel);
         this.yVelDiv.appendChild(this.yVelInput);
 
+        this.coordDiv.appendChild(this.pointsCoordLabel);
+        this.coordDiv.appendChild(this.pointsCoordDiv);
+
         this.winSetDiv.appendChild(this.nameDiv);
         this.winSetDiv.appendChild(this.moreButton);
         this.winSetDiv.appendChild(this.xDiv);
@@ -339,6 +377,7 @@ class WindowSetting {
         this.winSetDiv.appendChild(this.isStaticDiv);
         this.winSetDiv.appendChild(this.xVelDiv);
         this.winSetDiv.appendChild(this.yVelDiv);
+        this.winSetDiv.appendChild(this.coordDiv);
         this.winSetDiv.appendChild(this.expandDiv);
 
 
@@ -354,6 +393,29 @@ class WindowSetting {
 
         this.moreButton.onclick = this.expandButton;
 
+    }
+
+    setPointsCoordDiv() {
+        this.shape.points.forEach(point => {
+            let pointCoorDiv = document.createElement('div');
+            pointCoorDiv.className = 'settingInChildDiv';
+            let pointLabel = document.createElement('label');
+            pointLabel.className = 'inputLabel';
+            pointLabel.innerHTML = this.pointsCoordDiv.childNodes.length + 1;
+            let pointOutput = document.createElement('output');
+            pointOutput.className = 'numInput';
+            pointOutput.setAttribute('type', 'number');
+            pointOutput.defaultValue = `${parseInt(point[0])}, ${parseInt(point[1])}`;
+            pointCoorDiv.appendChild(pointLabel);
+            pointCoorDiv.appendChild(pointOutput);
+            this.pointsCoordDiv.appendChild(pointCoorDiv);
+        });
+    }
+
+    resetPointCoordDiv() {
+        while (this.pointsCoordDiv.childNodes.length > 0) {
+            this.pointsCoordDiv.removeChild(this.pointsCoordDiv.firstChild);
+        }
     }
 
     update() {
@@ -480,15 +542,23 @@ class NewShapeWindow {
 
 const sideDivId = 'sideContent';
 const screenDiv = document.getElementById('screenDiv');
+let btn01 = document.getElementById('btn01');
+
 let canvasId = 'screen';
 let canvas = document.getElementById(canvasId);
+
 canvas.width = screenDiv.offsetWidth;
 canvas.height = screenDiv.offsetHeight;
+
 let c = canvas.getContext('2d');
 let req;
+
 var shapeCount = 0;
+
 const windSetMap = new Map();
 const matrix = new Matrix(canvasId);
+
+let isGridOn = false;
 
 
 
@@ -497,7 +567,6 @@ function newShapeWin() {
     let newSW = new NewShapeWindow();
     newSW.draw(sideDivId);
 }
-
 
 function addDefaultShape(shapetype, nSide, height) {
     shapeCount += 1;
@@ -524,6 +593,9 @@ function deleteWindow(winId) {
 function play() {
     c.clearRect(0, 0, canvas.width, canvas.height);
     req = requestAnimationFrame(play);
+    if (isGridOn) {
+        setGrid();
+    }
     matrix.play();
     windSetMap.forEach(win => {
         win.update();
@@ -533,6 +605,9 @@ function play() {
 function refresh() {
     c.clearRect(0, 0, canvas.width, canvas.height);
     req = requestAnimationFrame(play);
+    if (isGridOn) {
+        setGrid();
+    }
     matrix.play();
     windSetMap.forEach(win => {
         win.update();
@@ -547,4 +622,42 @@ function stopFrame() {
 
 function clearCanvas() {
     c.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function setGrid() {
+    let gap = 25;
+    let xColumCount = (canvas.width / gap);
+    let yColumCount = (canvas.height / gap);
+    let xLength = (xColumCount * gap) - gap;
+    let yLength = (yColumCount * gap) - gap;
+    for (let i = 0; i < xColumCount; i++) {
+        c.lineWidth = 1;
+        c.strokeStyle = 'black';
+        c.beginPath();
+        c.moveTo((i * gap) + 0.5, 0.5);
+        c.lineTo((i * gap) + 0.5, yLength + 0.5);
+        c.closePath();
+        c.stroke();
+    }
+    for (let i = 0; i < yColumCount; i++) {
+        c.lineWidth = 1;
+        c.strokeStyle = 'black';
+        c.beginPath();
+        c.moveTo(0.5, (i * gap) + 0.5);
+        c.lineTo(xLength + 0.5, (i * gap) + 0.5);
+        c.closePath();
+        c.stroke();
+    }
+}
+
+function toggleGrid() {
+    if (isGridOn) {
+        btn01.style.backgroundColor = '#3A8E32A8';
+        isGridOn = false;
+        refresh();
+    } else {
+        btn01.style.backgroundColor = '#2eee36b0';
+        isGridOn = true;
+        refresh();
+    }
 }

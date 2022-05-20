@@ -5,6 +5,7 @@
     <script src="MainInterface.js" defer></script>
     <link rel="stylesheet" href="MainInterface.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
@@ -15,12 +16,15 @@
         <div id="topContent" class="topContent">
             <div id="contentControlDiv" class="contentControlDiv">
                 <div id="gridSwitchDiv" class="switchDiv">
-                    <button id="btn01" class="btn" onclick="showGrid()"></button>
-                    <span>Grid</span>
+                    <button id="btn01" class="btn" onclick="toggleGrid()"><span class="material-symbols-outlined"
+                            id="gridOn">grid_on</span></button>
                 </div>
                 <div id="clearCanvasSwitchDiv" class="switchDiv">
-                    <button id="btn02" class="btn" onclick="clearCanvas()"></button>
-                    <span>Clear canvas</span>
+                    <button id="btn02" class="btn" onclick="clearCanvas()">
+                        <span class="material-icons" id="clearCan">
+                            clear
+                        </span>
+                    </button>
                 </div>
             </div>
             <div id="frameControleDiv" class="frameControleDiv">
@@ -44,16 +48,3 @@
         </button>
     </div>
 </body>
-<script>
-    var gridActive = false;
-
-    function showGrid() {
-        if (!gridActive) {
-            document.getElementById('btn01').style.backgroundColor = '#2eee36b0';
-            gridActive = true;
-        } else {
-            document.getElementById('btn01').style.backgroundColor = '#3A8E32A8';
-            gridActive = false;
-        }
-    }
-</script>
